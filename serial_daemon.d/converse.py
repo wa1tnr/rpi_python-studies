@@ -18,7 +18,7 @@ with serial.Serial(port='/dev/ttyS0', baudrate=38400, bytesize=8, parity='N', st
             print('+', end='', flush=True)
             rutroh = rutroh + 1
             if (rutroh == 3):
-                rutroh - 0
+                rutroh = 0
                 print("SYSTEM ESCAPE: +++ detected.", flush=True)
                 # wake the screen:
                 os.system("xset s reset")
