@@ -24,8 +24,10 @@ with serial.Serial(port='/dev/ttyS0', baudrate=38400, bytesize=8, parity='N', st
                 os.system("xset s reset")
                 # time.sleep(seconds)
                 time.sleep(1)
-                os.system("xset s on s 900")
-                print("xset s reset -- was executed and a new 900 second timeout is instantiated.")
+                os.system("xset +dpms s default")
+                time.sleep(1)
+                os.system("xset +dpms s on s blank s 180")
+                print("xset s reset -- was executed and a new 180 second timeout is instantiated.")
                 x = ser.read()
                 xp = str(x)
                 break
