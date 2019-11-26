@@ -1,19 +1,28 @@
 #!/usr/bin/python3.5
+
+# github.com/raspberrypi/linux/issues/2517 xset
+
 import serial
 import sys
 import os
 import time
 
+# put display to sleep 180 seconds from now:
+# edit the next line to use the full path to the script
+os.system("_run_timed_hdmi_off.sh")
 sys.stdout.write('H')
+sys.stdout.write(' ')
 sys.stdout.flush()
 
-# setup xset right away:
-time.sleep(1)
-os.system("xset s default")
-time.sleep(1)
-os.system("xset s 22")
-time.sleep(1)
-print("\r\nHas xset now.  Continuing..")
+def xset_setup():
+    # this script spawns another in the background
+    # edit the next line to use the full path to the script
+    os.system("tv-recycle.sh")
+    # next two lines are commented out
+    # edit the next line to use the full path to the script
+    # os.system("_run_xset.sh")
+
+# xset_setup()
 
 with serial.Serial(port='/dev/ttyS0', baudrate=38400, bytesize=8, parity='N', stopbits=1, timeout=None, xonxoff=0, rtscts=0) as ser:
     rutroh = 0
@@ -27,16 +36,9 @@ with serial.Serial(port='/dev/ttyS0', baudrate=38400, bytesize=8, parity='N', st
             rutroh = rutroh + 1 # require three consecutive +'s to trigger an ESCape
             if (rutroh == 3):
                 rutroh = 0
-                print("SYSTEM ESCAPE: +++ detected.", flush=True)
-                # wake the screen:
-                os.system("xset s reset")
-                # time.sleep(seconds)
-                time.sleep(1)
-                os.system("xset s default")
-                time.sleep(1)
-                os.system("xset s 22")
-                time.sleep(1)
-                print("xset s reset ; xset s default ; xset s 22 -- was executed and a new 22 second timeout is instantiated.")
+                print(" SYSTEM ESCAPE: +++ detected.", flush=True)
+                xset_setup()
+                print("xset_setup() was called.")
                 x = ser.read()
                 xp = str(x)
                 break
