@@ -1,0 +1,16 @@
+#!/bin/sh
+
+/opt/vc/bin/tvservice -o # power off HDMI
+
+# display is OFF now.
+sleep 16
+
+# display may be truly OFF now.
+/opt/vc/bin/tvservice -p # invoke preferred mode HDMI
+fbset -depth 8
+sleep 1
+fbset -depth 32
+# xrefresh -d :0.0
+# fbset -xres 720
+# fbset -yres 400
+
